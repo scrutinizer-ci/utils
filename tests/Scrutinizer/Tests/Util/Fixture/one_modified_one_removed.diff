@@ -1,0 +1,95 @@
+diff --git a/src/CheckAccessControlPass.php b/src/CheckAccessControlPass.php
+index a5c01ca..f781f8f 100644
+--- a/src/CheckAccessControlPass.php
++++ b/src/CheckAccessControlPass.php
+@@ -76,7 +76,7 @@ class CheckAccessControlPass extends AstAnalyzerPass implements AnalyzerAwareInt
+             // where it was defined.
+             $objType = $property->getDeclaringClassType();
+ 
+-            if (null === $thisType || ! $thisType->equals($objType)) {
++            if (!$thisType->equals($objType)) {
+                 $this->phpFile->addComment($node->getLine(), $this->createInAccessiblePropertyError($property->getName(), $objType->getName(), 'private'));
+ 
+                 return;
+@@ -97,7 +97,7 @@ class CheckAccessControlPass extends AstAnalyzerPass implements AnalyzerAwareInt
+         }
+ 
+         if ($property->isProtected()) {
+-            if (null === $thisType || ! $thisType->isSubTypeOf($objType)) {
++            if ( ! $thisType->isSubTypeOf($objType)) {
+                 $this->phpFile->addComment($node->getLine(), $this->createInAccessiblePropertyError($property->getName(), $objType->getName(), 'protected'));
+             }
+ 
+@@ -127,7 +127,7 @@ class CheckAccessControlPass extends AstAnalyzerPass implements AnalyzerAwareInt
+         if ($method->isPrivate()) {
+             $type = $method->getDeclaringClassType();
+ 
+-            if (null === $thisType || ! $thisType->equals($type)) {
++            if (!$thisType->equals($type)) {
+                 $this->phpFile->addComment($node->getLine(), $this->createInAccessibleMethodError($method->getMethod()->getName(), $type->getName(), 'private'));
+ 
+                 return;
+@@ -148,7 +148,7 @@ class CheckAccessControlPass extends AstAnalyzerPass implements AnalyzerAwareInt
+         }
+ 
+         if ($method->isProtected()) {
+-            if (null === $thisType || ! $thisType->isSubTypeOf($type)) {
++            if ( ! $thisType->isSubTypeOf($type)) {
+                 $this->phpFile->addComment($node->getLine(), $this->createInAccessibleMethodError($method->getMethod()->getName(), $type->getName(), 'protected'));
+             }
+ 
+diff --git a/src/PhpParser/Scope/Scope.php b/src/PhpParser/Scope/Scope.php
+index 0110ef0..facb0c0 100644
+--- a/src/PhpParser/Scope/Scope.php
++++ b/src/PhpParser/Scope/Scope.php
+@@ -67,9 +67,6 @@ class Scope implements StaticScopeInterface
+         return isset($this->vars[$name]);
+     }
+ 
+-    /**
+-     * @return PhpType|null
+-     */
+     public function getTypeOfThis()
+     {
+         return $this->thisType;
+diff --git a/tests/Fixture/AccessControl/call_from_non_object_context.test b/tests/Fixture/AccessControl/call_from_non_object_context.test
+deleted file mode 100644
+index 5c7ab73..0000000
+--- a/tests/Fixture/AccessControl/call_from_non_object_context.test
++++ /dev/null
+@@ -1,34 +0,0 @@
+-<?php
+-
+-class A 
+-{
+-    private $a;
+-    protected $b;
+-    
+-    private function a() { }
+-    protected function b() { }
+-}
+-
+-$a = new A();
+-$a->a;
+-$a->a();
+-$a->b;
+-$a->b();
+-
+-function foo() {
+-    $a = new A();
+-    $a->a;
+-    $a->a();
+-    $a->b;
+-    $a->b();
+-}
+-
+--- COMMENTS --
+-Line 13: Are you sure that you can access the property "a" as it is declared private in class "A"?
+-Line 14: Are you sure that you can call "a()" as it is declared private in class "A"?
+-Line 15: Are you sure that you can access the property "b" as it is declared protected in class "A"?
+-Line 16: Are you sure that you can call "b()" as it is declared protected in class "A"?
+-Line 20: Are you sure that you can access the property "a" as it is declared private in class "A"?
+-Line 21: Are you sure that you can call "a()" as it is declared private in class "A"?
+-Line 22: Are you sure that you can access the property "b" as it is declared protected in class "A"?
+-Line 23: Are you sure that you can call "b()" as it is declared protected in class "A"?
+\ No newline at end of file

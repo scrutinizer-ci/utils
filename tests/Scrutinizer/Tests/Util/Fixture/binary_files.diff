@@ -1,0 +1,4 @@
+diff --git a/src/Acme/DemoBundle/Resources/public/images/welcome-demo.gif b/src/Acme/DemoBundle/Resources/public/images/welcome-demo.gif
+deleted file mode 100644
+index 0623de5..0000000
+Binary files a/src/Acme/DemoBundle/Resources/public/images/welcome-demo.gif and /dev/null differ

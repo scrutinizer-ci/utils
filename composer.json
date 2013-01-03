@@ -1,0 +1,14 @@
+{
+    "name": "scrutinizer/utils",
+
+    "require": {
+        "php": ">=5.4",
+        "symfony/process": "2.*"
+    },
+
+    "autoload": {
+        "psr-0": {
+            "Scrutinizer": "src/"
+        }
+    }
+}

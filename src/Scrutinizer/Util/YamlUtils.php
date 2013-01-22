@@ -19,8 +19,7 @@ class YamlUtils
      */
     public static function safeParse($input)
     {
-        Yaml::disablePhpParsing();
-        Yaml::disableObjectSupport();
+        Yaml::setPhpParsing(false);
 
         return (new Parser())->parse($input);
     }

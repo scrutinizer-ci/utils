@@ -30,4 +30,11 @@ class Process extends BaseProcess
 
         return $rs;
     }
+
+    public function execute($outputCallback = null)
+    {
+        $this->run($outputCallback);
+
+        return $this;
+    }
 }

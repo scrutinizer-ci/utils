@@ -3,7 +3,8 @@
 
     "require": {
         "php": ">=5.4",
-        "symfony/process": "2.*"
+        "symfony/process": "~2.0",
+        "symfony/yaml": "~2.0"
     },
 
     "autoload": {

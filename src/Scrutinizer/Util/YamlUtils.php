@@ -19,8 +19,10 @@ class YamlUtils
      */
     public static function safeParse($input)
     {
-        Yaml::setPhpParsing(false);
+        if (method_exists('Symfony\Component\Yaml\Yaml', 'setPhpParsing')) {
+            Yaml::setPhpParsing(false);
+        }
 
-        return (new Parser())->parse($input);
+        return (new Parser())->parse($input, true, false);
     }
 }

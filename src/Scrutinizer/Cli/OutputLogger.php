@@ -35,7 +35,7 @@ class OutputLogger extends AbstractLogger
 
         $this->output->writeln("Errors:");
         foreach ($this->errors as $error) {
-            $this->output->writeln(' - '.$error);
+            $this->output->writeln(' - '.$error, OutputInterface::OUTPUT_RAW);
         }
         $this->output->write("\n");
 
@@ -54,7 +54,7 @@ class OutputLogger extends AbstractLogger
             return;
         }
 
-        $this->output->write($this->formatMessage($message, $context));
+        $this->output->write($this->formatMessage($message, $context), false, OutputInterface::OUTPUT_RAW);
     }
 
     private function formatMessage($message, array $context)

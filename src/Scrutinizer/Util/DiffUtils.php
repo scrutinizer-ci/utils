@@ -248,6 +248,7 @@ abstract class DiffUtils
         }
 
         $chunk = array(
+            'raw_header' => $lines[$curLine],
             'original_start_index' => (int) $match[1],
             'original_size' => empty($match[2]) ? 1 : (int) substr($match[2], 1),
             'new_start_index' => (int) $match[3],
@@ -272,7 +273,7 @@ abstract class DiffUtils
             } else if ('+' === $lines[$curLine][0]) {
                 $type = 'added';
             } else if ('\\' === $lines[$curLine][0]) {
-                continue;
+                $type = 'escaped';
             } else {
                 throw new \RuntimeException(sprintf('Invalid line start "%s" of line "%s".', $lines[$curLine][0], $lines[$curLine]));
             }
@@ -280,6 +281,7 @@ abstract class DiffUtils
             $chunk['diff'][] = array(
                 'type' => $type,
                 'content' => substr($lines[$curLine], 1),
+                'raw' => $lines[$curLine],
             );
         }
 

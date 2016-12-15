@@ -24,9 +24,7 @@ class YamlUtils
             Yaml::setPhpParsing(false);
         }
 
-        if (!self::validateDuplicatedKey($input)){
-            throw new ParseException("Duplicate key detected while parsing YAML :{".$input."}");
-        }
+        self::validateDuplicatedKey($input);
 
         return (new Parser())->parse($input, true, false);
     }
@@ -56,7 +54,7 @@ class YamlUtils
                 $data[$indentationofCurrentLine][$key] = array();
             } elseif ($indentationofCurrentLine === $indentationofLastline) {
                 if (false === strpos($key, '-') && isset($data[$indentationofCurrentLine][$key])) {
-                    return false;
+                    throw new ParseException(sprintf('Duplicate key "%s" detected on line %s whilst parsing YAML.', $key, $linenumber));
                 } else {
                     $data[$indentationofCurrentLine][$key] = array();
                 }
@@ -67,13 +65,13 @@ class YamlUtils
                     }
                 }
                 if (false === strpos($key, '-') && isset($data[$indentationofCurrentLine][$key])) {
-                    return false;
+                    throw new ParseException(sprintf('Duplicate key "%s" detected on line %s whilst parsing YAML.', $key, $linenumber));
                 } else {
                     $data[$indentationofCurrentLine][$key] = array();
                 }
             }
             $indentationofLastline = $indentationofCurrentLine;
         }
-        return true;
+        return;
     }
 }

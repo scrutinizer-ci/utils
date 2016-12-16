@@ -39,38 +39,36 @@ class YamlUtils
 
         $lines = explode("\n", $input);
         $data = array();
-        $indentationofLastline = 0;
+        $nbSpacesOfLastLine = 0;
         
         foreach ($lines as $linenumber => $line) {
-            $indentationofCurrentLine = strlen($line) - strlen(ltrim($line, ' '));
-            $value=trim($line);
-            if (false !== strpos($value, ':')) {
-                $key = substr($value, 0, strpos($value, ":"));
-            }  else {
-                $key = $value;
+            $trimmedLine = ltrim($line, ' ');
+            if ($trimmedLine === '') {
+                continue;
             }
 
-            if ($indentationofCurrentLine > $indentationofLastline) {
-                $data[$indentationofCurrentLine][$key] = array();
-            } elseif ($indentationofCurrentLine === $indentationofLastline) {
-                if (false === strpos($key, '-') && isset($data[$indentationofCurrentLine][$key])) {
-                    throw new ParseException(sprintf('Duplicate key "%s" detected on line %s whilst parsing YAML.', $key, $linenumber));
-                } else {
-                    $data[$indentationofCurrentLine][$key] = array();
-                }
-            } else {
-                foreach ($data as $indentation => $keys) {
-                    if ($indentation > $indentationofCurrentLine) {
-                        unset($data[$indentation]);
+            $nbSpacesOfCurrentLine = strlen($line) - strlen($trimmedLine);
+
+            if ($nbSpacesOfCurrentLine < $nbSpacesOfLastLine) {
+                foreach ($data as $nbSpaces => $keys) {
+                    if ($nbSpaces > $nbSpacesOfCurrentLine) {
+                        unset($data[$nbSpaces]);
                     }
                 }
-                if (false === strpos($key, '-') && isset($data[$indentationofCurrentLine][$key])) {
-                    throw new ParseException(sprintf('Duplicate key "%s" detected on line %s whilst parsing YAML.', $key, $linenumber));
-                } else {
-                    $data[$indentationofCurrentLine][$key] = array();
-                }
             }
-            $indentationofLastline = $indentationofCurrentLine;
+
+            if ($trimmedLine[0] === '-' || false === $pos = strpos($trimmedLine, ':')) {
+                continue;
+            }
+
+            $key = substr($trimmedLine, 0, $pos);
+
+            if (isset($data[$nbSpacesOfCurrentLine][$key])) {
+                throw new ParseException(sprintf('Duplicate key "%s" detected on line %s whilst parsing YAML.', $key, $linenumber));
+            }
+
+            $data[$nbSpacesOfCurrentLine][$key] = array();
+            $nbSpacesOfLastLine = $nbSpacesOfCurrentLine;
         }
         return;
     }

@@ -2,7 +2,7 @@
     "name": "scrutinizer/utils",
 
     "require": {
-        "php": "^5.4|^7.0",
+        "php": "^5.6|^7.0",
         "symfony/process": "~2.0",
         "symfony/yaml": "~2.0"
     },

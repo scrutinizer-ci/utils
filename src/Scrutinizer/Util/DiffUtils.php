@@ -23,6 +23,8 @@ use Symfony\Component\Process\Process;
 
 abstract class DiffUtils
 {
+    const MAX_SIZE = 1024 * 1024 * 512;
+
     /**
      * Generates a DIFF.
      *
@@ -33,6 +35,10 @@ abstract class DiffUtils
     public static function generate($before, $after)
     {
         if ($before === $after) {
+            return '';
+        }
+
+        if (strlen($before) > self::MAX_SIZE || strlen($after) > self::MAX_SIZE) {
             return '';
         }
 

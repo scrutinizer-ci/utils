@@ -1,0 +1,12 @@
+filter:
+    paths:
+        - src/*
+        - tests/*
+    
+    excluded_paths:
+        - tests/*/Fixture/*
+
+checks:
+    php: true
+    
+build: true

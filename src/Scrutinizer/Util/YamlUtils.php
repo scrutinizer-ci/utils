@@ -18,13 +18,15 @@ class YamlUtils
      *
      * @return mixed
      */
-    public static function safeParse($input)
+    public static function safeParse($input, $validateDuplicateKeys = true)
     {
         if (method_exists('Symfony\Component\Yaml\Yaml', 'setPhpParsing')) {
             Yaml::setPhpParsing(false);
         }
 
-        self::validateDuplicatedKey($input);
+        if ($validateDuplicateKeys) {
+            self::validateDuplicatedKey($input);
+        }
 
         return (new Parser())->parse($input, true, false);
     }
@@ -35,8 +37,8 @@ class YamlUtils
      * @param string $input
      * @return bool
      */
-    private static function validateDuplicatedKey($input) {
-
+    private static function validateDuplicatedKey($input)
+    {
         $lines = explode("\n", $input);
         $data = array();
         $nbSpacesOfLastLine = 0;
@@ -70,6 +72,5 @@ class YamlUtils
             $data[$nbSpacesOfCurrentLine][$key] = array();
             $nbSpacesOfLastLine = $nbSpacesOfCurrentLine;
         }
-        return;
     }
 }

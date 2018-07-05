@@ -43,7 +43,7 @@ class YamlUtils
         
         foreach ($lines as $linenumber => $line) {
             $trimmedLine = ltrim($line, ' ');
-            if ($trimmedLine === '') {
+            if ($trimmedLine === '' || $trimmedLine[0] === '#') {
                 continue;
             }
 

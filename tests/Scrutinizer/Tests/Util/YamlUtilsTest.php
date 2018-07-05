@@ -45,6 +45,20 @@ YAML;
         $actualArray = YamlUtils::safeParse($input);
     }
 
+    public function testDuplicatedKeyIgnoresComments()
+    {
+        $input = <<<YAML
+
+abc:
+    # https:
+    # https:
+    foo: bar
+
+YAML;
+
+        $this->assertEquals(['abc' => ['foo' => 'bar']], YamlUtils::safeParse($input));
+    }
+
     public function testDuplicatedContentSequencesShouldNotThrowException()
     {
         $input = <<<YAML

@@ -34,8 +34,14 @@ class PathUtilsTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array('foo', array(), array(), false),
+            array('foo', array(), array('bar/*'), false),
             array('foo', array('foo'), array('foo/bar'), false),
             array('foo/bar', array('foo/*'), array('foo/bar'), true),
+            array('src/abc/def', array('src/*'), array('src/abc/*'), true),
+            array('src/abc/def', array('src/*'), array('src/foo/*'), false),
+            array('src/abc/def', array('src/abc/*'), array('src/*'), false),
+            array('src/abc/def', array('src/abc/*'), array('src/abc/*'), false),
+            array('src/abc/def', array('src/*', 'src/abc/*'), array('src/*'), false),
         );
     }
 }

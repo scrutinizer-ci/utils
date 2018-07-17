@@ -6,13 +6,14 @@ abstract class PathUtils
 {
     public static function isFiltered($path, array $filter)
     {
-        $paths = $filter['paths'] ?? [];
+        $paths = isset($filter['paths']) ? $filter['paths'] : [];
         $pathMatch = self::getLongestMatch($path, $paths);
         if ($paths && $pathMatch === null) {
             return true;
         }
 
-        $excludedMatch = self::getLongestMatch($path, $filter['excluded_paths'] ?? []);
+        $excludedPaths = isset($filter['excluded_paths']) ? $filter['excluded_paths'] : [];
+        $excludedMatch = self::getLongestMatch($path, $excludedPaths);
         if ($excludedMatch) {
             return $pathMatch === null || strlen($excludedMatch) > strlen($pathMatch);
         }
@@ -25,7 +26,7 @@ abstract class PathUtils
         return self::getLongestMatch($path, $patterns) !== null;
     }
     
-    private static function getLongestMatch(string $path, array $patterns): ?string
+    private static function getLongestMatch($path, array $patterns)
     {
         $currentMatch = null;
         foreach ($patterns as $pattern) {

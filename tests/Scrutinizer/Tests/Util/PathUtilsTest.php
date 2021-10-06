@@ -2,9 +2,10 @@
 
 namespace Scrutinizer\Tests\Util;
 
+use PHPUnit\Framework\TestCase;
 use Scrutinizer\Util\PathUtils;
 
-class PathUtilsTest extends \PHPUnit_Framework_TestCase
+class PathUtilsTest extends TestCase
 {
     /**
      * @dataProvider getMatchingTests

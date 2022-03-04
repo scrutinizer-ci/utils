@@ -48,7 +48,7 @@ abstract class DiffUtils
         $afterTmpFile = tempnam(sys_get_temp_dir(), 'diff');
         file_put_contents($afterTmpFile, $after);
 
-        $proc = new Process('git diff --no-index --exit-code -- '.escapeshellarg($beforeTmpFile).' '.escapeshellarg($afterTmpFile));
+        $proc = Process::fromShellCommandline('git diff --no-index --exit-code -- '.escapeshellarg($beforeTmpFile).' '.escapeshellarg($afterTmpFile));
         $proc->run();
 
         @unlink($beforeTmpFile);
@@ -94,7 +94,7 @@ abstract class DiffUtils
         $pFile = tempnam(sys_get_temp_dir(), 'diff-patch');
         file_put_contents($pFile, "--- a/".basename($oFile)."\n+++ b/".basename($oFile)."\n".$diff);
 
-        $proc = new Process(sprintf('cd %s && git apply'.($reverse ? ' --reverse' : '').' --no-index --verbose %s', escapeshellarg(dirname($pFile)), escapeshellarg(basename($pFile))));
+        $proc = Process::fromShellCommandline(sprintf('cd %s && git apply'.($reverse ? ' --reverse' : '').' --no-index --verbose %s', escapeshellarg(dirname($pFile)), escapeshellarg(basename($pFile))));
         if (0 !== $proc->run()) {
             throw new ProcessFailedException($proc);
         }
@@ -133,7 +133,7 @@ abstract class DiffUtils
     // This is more or less a port of https://github.com/mojombo/grit/blob/master/lib/grit/diff.rb
     public static function diff($repositoryPath, $baseSha, $headSha, array $paths = array())
     {
-        $proc = new Process(sprintf('cd %s && git diff %s %s -- %s',
+        $proc = Process::fromShellCommandline(sprintf('cd %s && git diff %s %s -- %s',
                     escapeshellarg($repositoryPath),
                     escapeshellarg($baseSha),
                     escapeshellarg($headSha),

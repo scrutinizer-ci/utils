@@ -2,10 +2,11 @@
 
 namespace Scrutinizer\Tests\Util;
 
+use PHPUnit\Framework\TestCase;
 use Scrutinizer\Util\YamlUtils;
 use Symfony\Component\Yaml\Exception\ParseException;
 
-class YamlUtilsTest extends \PHPUnit_Framework_TestCase
+class YamlUtilsTest extends TestCase
 {
     public function testSafeParseDoesNotResolveFilename()
     {
@@ -24,7 +25,7 @@ build:
     environment: true
 YAML;
 
-        $this->setExpectedException(ParseException::class);
+        $this->expectException(ParseException::class);
         $actualArray = YamlUtils::safeParse($input);
 
     }
@@ -41,7 +42,7 @@ build:
             - test
 YAML;
 
-        $this->setExpectedException(ParseException::class);
+        $this->expectException(ParseException::class);
         $actualArray = YamlUtils::safeParse($input);
     }
 
@@ -168,6 +169,7 @@ YAML;
 
         try {
             $actualArray = YamlUtils::safeParse($input);
+            $this->expectNotToPerformAssertions();
         }catch (ParseException $ex) {
             throw new \RuntimeException("Unexpected ParseException thrown: ", $ex);
         }
@@ -192,6 +194,7 @@ YAML;
 
         try {
             $actualArray = YamlUtils::safeParse($input);
+            $this->expectNotToPerformAssertions();
         }catch (ParseException $ex) {
             throw new \RuntimeException("Unexpected ParseException thrown: ", $ex);
         }
@@ -228,6 +231,7 @@ YAML;
 
         try {
             $actualArray = YamlUtils::safeParse($input);
+            $this->expectNotToPerformAssertions();
         }catch (ParseException $ex) {
             throw new \RuntimeException("Unexpected ParseException thrown: ", $ex);
         }
@@ -252,6 +256,7 @@ YAML;
 
         try {
             $actualArray = YamlUtils::safeParse($input);
+            $this->expectNotToPerformAssertions();
         }catch (ParseException $ex) {
             throw new \RuntimeException("Unexpected ParseException thrown: ", $ex);
         }

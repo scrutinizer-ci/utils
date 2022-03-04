@@ -18,9 +18,10 @@
 
 namespace Scrutinizer\Tests\Util;
 
+use PHPUnit\Framework\TestCase;
 use Scrutinizer\Util\DiffUtils;
 
-class DiffUtilsTest extends \PHPUnit_Framework_TestCase
+class DiffUtilsTest extends TestCase
 {
     /**
      * @dataProvider getParserAndGeneratorTests

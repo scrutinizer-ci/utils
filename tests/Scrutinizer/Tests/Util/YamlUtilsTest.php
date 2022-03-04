@@ -169,8 +169,8 @@ YAML;
 
         try {
             $actualArray = YamlUtils::safeParse($input);
-            $this->expectNotToPerformAssertions();
-        }catch (ParseException $ex) {
+            $this->assertNotEmpty($actualArray);
+        } catch (ParseException $ex) {
             throw new \RuntimeException("Unexpected ParseException thrown: ", $ex);
         }
     }
@@ -194,7 +194,7 @@ YAML;
 
         try {
             $actualArray = YamlUtils::safeParse($input);
-            $this->expectNotToPerformAssertions();
+            $this->assertNotEmpty($actualArray);
         }catch (ParseException $ex) {
             throw new \RuntimeException("Unexpected ParseException thrown: ", $ex);
         }
@@ -231,7 +231,7 @@ YAML;
 
         try {
             $actualArray = YamlUtils::safeParse($input);
-            $this->expectNotToPerformAssertions();
+            $this->assertNotEmpty($actualArray);
         }catch (ParseException $ex) {
             throw new \RuntimeException("Unexpected ParseException thrown: ", $ex);
         }
@@ -256,7 +256,7 @@ YAML;
 
         try {
             $actualArray = YamlUtils::safeParse($input);
-            $this->expectNotToPerformAssertions();
+            $this->assertNotEmpty($actualArray);
         }catch (ParseException $ex) {
             throw new \RuntimeException("Unexpected ParseException thrown: ", $ex);
         }

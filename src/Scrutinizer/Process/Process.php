@@ -8,7 +8,7 @@ use Symfony\Component\Process\Process as BaseProcess;
 
 class Process extends BaseProcess
 {
-    public function run($outputCallback = null)
+    public function run(callable $outputCallback = null, array $env = []): int
     {
         if ($outputCallback instanceof LoggerInterface) {
             $outputCallback = function($type, $data) use ($outputCallback) {
@@ -19,7 +19,7 @@ class Process extends BaseProcess
             };
         }
 
-        return parent::run($outputCallback);
+        return parent::run($outputCallback, $env);
     }
 
     public function runOrException($outputCallback = null)
